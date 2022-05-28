@@ -21,9 +21,13 @@ class Get extends Controller
     }
 
 
-    public function __invoke(int $crawl_id)
+    public function __invoke(int $crawlId)
     {
-        $crawl = $this->crawl::whereId($crawl_id)->firstOrFail();
-        return view('get', ['crawl' => $crawl]);
+        try {
+            $crawl = $this->crawl::whereId($crawlId)->firstOrFail();
+            return view('get', ['crawl' => $crawl]);
+        } catch (\Exception $e) {
+            return response()->redirectToRoute('index')->with("fail", "detail no exist.");
+        }
     }
 }

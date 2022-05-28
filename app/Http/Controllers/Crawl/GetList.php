@@ -27,15 +27,16 @@ class GetList extends Controller
     public function __invoke(Request $request)
     {
 
-        $crawl = $this->crawl;
+        $crawl = $this->crawl::query();
         foreach ($this->fuzzyColumns as $column) {
 
-            if($request->has($column))
-                $crawl = $crawl->where($column, 'like', implode('', ['%', $request->input($column), '%']));
+            if($request->input($column)) {
+                $crawl->where($column, 'like', implode('', ['%', $request->input($column), '%']));
+            }
         }
 
-        if($request->has("start_at"))
-            $crawl = $crawl->where("created_at", '>=', Carbon::parse($request->input('start_at'))->toDateTimeString());
+        if($request->input("start_at"))
+            $crawl->where("created_at", '>=', Carbon::parse($request->input('start_at'))->toDateTimeString());
 
         $crawls = $crawl->orderBy("created_at", "DESC")->paginate(2);
         return view('index', ['crawls' => $crawls]);

@@ -7,7 +7,10 @@
         <title>Crawl</title>
 
         <!-- Fonts -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
         <!-- Styles -->
         <style>
@@ -21,36 +24,82 @@
         </style>
     </head>
 <body>
-    @if (session('result'))
-        <div class="alert alert-success">
-            {{ session('result') }}
-        </div>
-    @endif
-
-    <form method="post" action="/crawl">
-        @csrf <!-- {{ csrf_field() }} -->
-        <input type="text" placeholder="crawl url" name="url">
-        <button>submit</button>
-    </form>
-
-    <form method="get" action="/">
-        <input type="text" placeholder="search title" name="title">
-        <input type="text" placeholder="search description" name="description">
-        <input type="text" placeholder="search start time" name="start_at">
-        <button>search</button>
-    </form>
-
-    <div>
-        @foreach ($crawls as $crawl)
-            <div><a href="{{ $crawl->url }}">{{ $crawl->title }}</a></div>
-            <div><img src="{{ $crawl->image }}" width="200" alt=""></div>
-            <div>{{ $crawl->description }}</div>
-            <div>{{ $crawl->created_at }}</div>
-            <div><a href="/crawl/{{ $crawl->id }}">Detail</a></div>
-        @endforeach
+    <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('fail'))
+            <div class="alert alert-danger">
+                {{ session('fail') }}
+            </div>
+        @endif
     </div>
 
-    <div>
+    <div class="container">
+        <div class="row">
+            <form class="row g-3" method="post" action="/crawl">
+                @csrf <!-- {{ csrf_field() }} -->
+                <div class="col-auto">
+                    <input type="text" class="form-control" placeholder="crawl url" name="url">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">crawl</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <form class="row g-3" method="get" action="/">
+                <div class="col-auto">
+                    <input type="text" class="form-control" placeholder="search title" name="title" value="{{ Request::get("title") ?? "" }}">
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" placeholder="search description" name="description" value="{{ Request::get("description") ?? "" }}">
+                </div>
+                <div class="col-auto">
+                    <input type="date" class="form-control" placeholder="search start time" name="start_at" value="{{ Request::get("start_at") ?? "" }}">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary mb-3">search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">CreateTime</th>
+                <th scope="col">Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($crawls as $crawl)
+            <tr>
+                <td>
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="{{ $crawl->image }}" width="200" alt="">
+                    </div>
+                </td>
+                <th scope="row"><a target="_blank" href="{{ $crawl->url }}">{{ $crawl->title }}</a></th>
+                <td>{{ $crawl->description }}</td>
+                <td>{{ $crawl->created_at }}</td>
+                <td><a class="link-primary" href="/crawl/{{ $crawl->id }}">Detail</a></td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    </div>
+
+    <div class="container">
         {{ $crawls->links() }}
     </div>
 </body>

@@ -7,7 +7,10 @@
         <title>Crawl</title>
 
         <!-- Fonts -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
         <!-- Styles -->
         <style>
@@ -22,13 +25,47 @@
     </head>
 <body>
 
-    <div><a href="/">Back</a></div>
-    <div>
-            <div><a href="{{ $crawl->url }}">{{ $crawl->title }}</a></div>
-            <div><img src="{{ $crawl->image }}" width="200" alt=""></div>
-            <div>{{ $crawl->description }}</div>
-            <div><iframe src="{{ $crawl->url }}" width="800" height="400"></iframe></div>
-            <div>{{ $crawl->created_at }}</div>
+    <div class="container">
+        <div class="row">
+            <form class="row g-3">
+                <a class="link-primary" href="/">Back</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="mb-3 row">
+                <label for="Title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <a href="{{ $crawl->url }}">{{ $crawl->title }}</a>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Image" class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                    <img src="{{ $crawl->image }}" width="200" alt="">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Description" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    {{ $crawl->description }}
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Body" class="col-sm-2 col-form-label">Body</label>
+                <div class="col-sm-10">
+                    <iframe src="{{ $crawl->url }}" width="800" height="400"></iframe>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="createTime" class="col-sm-2 col-form-label">createTime</label>
+                <div class="col-sm-10">
+                    {{ $crawl->created_at }}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -33,9 +33,9 @@ class Post extends Controller
             $crawl->image = CrawlService::crawlImage($request->url, $crawl->id);
             $crawl->save();
 
-            return response()->redirectToRoute('index')->with("result", "crawl success");
+            return response()->redirectToRoute('index')->with("success", "crawl success");
         } catch (\Exception $e) {
-            return response()->redirectToRoute('index')->with("result", "crawl fail");
+            return response()->redirectToRoute('index')->with("fail", "crawl fail");
         }
     }
 }
